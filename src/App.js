@@ -7,6 +7,8 @@ import ForgotPassword from "./components/authentication/ForgotPassword";
 import UpdateProfile from "./components/authentication/UpdateProfile";
 import Header from "./components/Header";
 import Profile from "./components/authentication/Profile";
+import Navbar from "./components/Navbar";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
@@ -14,7 +16,15 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
-            <Route exact path="/" element={<Header />}></Route>
+            <Route
+              exact
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            ></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/signin" element={<Signin />}></Route>
             <Route path="/forgot-password" element={<ForgotPassword />}></Route>

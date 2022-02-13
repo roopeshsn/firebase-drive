@@ -97,7 +97,7 @@ export default function UpdateProfile() {
             >
               Update
             </button>
-            <Link className="text-gray-400 font-bold" to="/dashboard">
+            <Link className="text-gray-400 font-bold" to="/profile">
               Cancel
             </Link>
           </div>
