@@ -29,7 +29,7 @@ export default function UpdateProfile() {
 
     Promise.all(promises)
       .then(() => {
-        navigate("/dashboard");
+        navigate("/profile");
       })
       .catch((err) => {
         setError("Failed to update account");
