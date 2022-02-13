@@ -10,7 +10,7 @@ import Profile from "./components/authentication/Profile";
 
 function App() {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div>
       <Router>
         <AuthProvider>
           <Routes>
