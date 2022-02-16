@@ -1,8 +1,6 @@
 import React from "react";
 import DashboardContent from "./DashboardContent";
-import DropdownMenu from "./DropdownMenu";
 import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
 
 export default function Dashboard() {
   return (
