@@ -1,4 +1,10 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
@@ -26,6 +32,39 @@ export default function DropdownMenu({ currentFolder }) {
     });
   }
 
+  function handleUpload(e) {
+    const file = e.target.files[0];
+    if (currentFolder == null || file == null) return;
+    console.log(currentFolder.path);
+
+    const filePath =
+      currentFolder === ROOT_FOLDER
+        ? `${currentFolder.path.join("/")}/${file.name}`
+        : `${currentFolder.path.join("/")}/${currentFolder.name}/${file.name}`;
+
+    console.log(filePath);
+    const storage = getStorage();
+    const storageRef = ref(storage, `/files/${currentUser.uid}/${filePath}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {},
+      (success) => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log(url);
+          addDoc(collection(db, "files"), {
+            name: file.name,
+            url: url,
+            folderId: currentFolder.id,
+            userId: currentUser.uid,
+            createdAt: serverTimestamp(),
+          });
+        });
+      }
+    );
+  }
+
   return (
     <>
       <div className="w-44 absolute left-4 top-28 bg-white shadow rounded">
@@ -37,7 +76,10 @@ export default function DropdownMenu({ currentFolder }) {
             Folder
           </div>
           <div className="py-2 px-2 hover:bg-gray-100 hover: rounded">
-            File upload
+            <label>
+              <span>File upload</span>
+              <input onChange={handleUpload} type="file" className="hidden" />
+            </label>
           </div>
           <div className="py-2 px-2 hover:bg-gray-100 hover: rounded">
             Folder upload
