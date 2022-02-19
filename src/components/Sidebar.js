@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DropdownMenu from "./DropdownMenu";
 
-export default function Sidebar() {
+export default function Sidebar({ folder }) {
   const [showDropDown, setShowDropdown] = useState(false);
   return (
     <div className="pr-4">
@@ -13,7 +13,7 @@ export default function Sidebar() {
           >
             New
           </div>
-          {showDropDown && <DropdownMenu />}
+          {showDropDown && <DropdownMenu currentFolder={folder} />}
         </div>
 
         <div className="my-4">

@@ -1,5 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Folder({ folder }) {
-  return <div>{folder.name}</div>;
+  return;
 }

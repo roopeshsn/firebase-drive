@@ -1,14 +1,23 @@
-import { doc, getDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useEffect, useReducer } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
 import { formatDoc } from "../utils/firebase";
 
 const ACTIONS = {
   SELECT_FOLDER: "select-folder",
   UPDATE_FOLDER: "update-folder",
+  SET_CHILD_FOLDERS: "set-child-folders",
 };
 
-const ROOT_FOLDER = {
+export const ROOT_FOLDER = {
   name: "My Drive",
   id: null,
   path: [],
@@ -30,6 +39,12 @@ function reducer(state, { type, payload }) {
         folder: payload.folder,
       };
 
+    case ACTIONS.SET_CHILD_FOLDERS:
+      return {
+        ...state,
+        childFolders: payload.childFolders,
+      };
+
     default:
       return state;
   }
@@ -42,6 +57,8 @@ export function useFolder(folderId = null, folder = null) {
     childFolders: [],
     childFiles: [],
   });
+
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     dispatch({ type: ACTIONS.SELECT_FOLDER, payload: { folder, folderId } });
@@ -72,7 +89,22 @@ export function useFolder(folderId = null, folder = null) {
       });
   }, [folderId]);
 
-  useEffect(() => {}, [folderId]);
+  useEffect(() => {
+    const q = query(
+      collection(db, "folders"),
+      where("parentId", "==", folderId),
+      where("userId", "==", currentUser.uid)
+    );
+
+    return onSnapshot(q, (querySnapshot) => {
+      dispatch({
+        type: ACTIONS.SET_CHILD_FOLDERS,
+        payload: {
+          childFolders: querySnapshot.docs.map(formatDoc),
+        },
+      });
+    });
+  }, [folderId, currentUser]);
 
   return state;
 }

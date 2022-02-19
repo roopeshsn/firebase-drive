@@ -25,6 +25,15 @@ function App() {
                 </PrivateRoute>
               }
             ></Route>
+            <Route
+              exact
+              path="/folder/:folderId"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            ></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/signin" element={<Signin />}></Route>
             <Route path="/forgot-password" element={<ForgotPassword />}></Route>

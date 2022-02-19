@@ -2,15 +2,25 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
+import { ROOT_FOLDER } from "../hooks/useFolder";
 
-export default function DropdownMenu() {
+export default function DropdownMenu({ currentFolder }) {
   const { currentUser } = useAuth();
 
   function openModal() {
     const newFolder = prompt("New folder: ");
+
+    if (currentFolder == null) return;
+
+    const path = [...currentFolder.path];
+    if (currentFolder !== ROOT_FOLDER) {
+      path.push({ name: currentFolder.name, id: currentFolder.id });
+    }
+
     addDoc(collection(db, "folders"), {
       name: newFolder,
-      parentId: null,
+      parentId: currentFolder.id,
+      path: path,
       userId: currentUser.uid,
       createdAt: serverTimestamp(),
     });
