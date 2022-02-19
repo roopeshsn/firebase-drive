@@ -5,9 +5,7 @@ import Signin from "./components/authentication/Signin";
 import PrivateRoute from "./components/authentication/PrivateRoute";
 import ForgotPassword from "./components/authentication/ForgotPassword";
 import UpdateProfile from "./components/authentication/UpdateProfile";
-import Header from "./components/Header";
 import Profile from "./components/authentication/Profile";
-import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 
 function App() {

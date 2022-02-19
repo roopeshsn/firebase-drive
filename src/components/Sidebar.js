@@ -4,7 +4,7 @@ import DropdownMenu from "./DropdownMenu";
 export default function Sidebar({ folder }) {
   const [showDropDown, setShowDropdown] = useState(false);
   return (
-    <div className="pr-4">
+    <div className="pr-4 border-b-2 border-gray-300">
       <div className="mt-4">
         <div>
           <div
@@ -16,7 +16,7 @@ export default function Sidebar({ folder }) {
           {showDropDown && <DropdownMenu currentFolder={folder} />}
         </div>
 
-        <div className="my-4">
+        <div className="my-4 pl-6 text-gray-700">
           <div className="text-sm font-semibold px-2 hover:bg-gray-100 hover:rounded-r-full">
             <div className="px-4 py-2">My Drive</div>
           </div>
